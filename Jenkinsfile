@@ -13,11 +13,6 @@ pipeline{
                 cleanWs()
             }
         }
-         stage('Checkout from Git'){
-            steps{
-                git branch: 'master', url: 'https://github.com/shubnimkar/Netflix-clone.git'
-            }
-        }
        
         stage("Sonarqube Analysis "){
             steps{
@@ -55,20 +50,20 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
                        sh "docker build --build-arg TMDB_V3_API_KEY=9218b88558e17dab998e1e391535cfed -t netflix ."
-                       sh "docker tag netflix shubnimkar/netflix:latest "
-                       sh "docker push shubnimkar/netflix:latest "
+                       sh "docker tag netflix savarni4353/netflix:latest "
+                       sh "docker push savarni4353/netflix:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image shubnimkar/netflix:latest > trivyimage.txt" 
+                sh "trivy image savarni4353/netflix:latest > trivyimage.txt" 
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name netflix -p 8081:80 shubnimkar/netflix:latest'
+                sh 'docker run -d --name netflix -p 8081:80 savarni4353/netflix:latest'
             }
         }
         stage('Deploy to kubernetes'){

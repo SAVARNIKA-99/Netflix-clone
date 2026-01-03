@@ -36,7 +36,7 @@ pipeline{
         }
         stage('Install Dependencies') {
             steps {
-                sh "yarn install"
+                sh "yarn install --frozen-lockfile"
             }
         }
         stage('OWASP FS SCAN') {

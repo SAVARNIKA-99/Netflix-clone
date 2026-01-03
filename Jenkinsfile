@@ -13,6 +13,11 @@ pipeline{
                 cleanWs()
             }
         }
+         stage('Checkout from Git'){
+            steps{
+                git branch: 'master', url: 'https://github.com/shubnimkar/Netflix-clone.git'
+            }
+        }
        
         stage("Sonarqube Analysis "){
             steps{
@@ -31,7 +36,7 @@ pipeline{
         }
         stage('Install Dependencies') {
             steps {
-                sh "yarn install --frozen-lockfile"
+                sh "npm install"
             }
         }
         stage('OWASP FS SCAN') {
